@@ -1,15 +1,7 @@
-# Data Collection
+# Greek News analysis
 
-A Python web scraper for collecting articles from Greek news websites.
+This project is a Python package for analyzing Greek news articles.
 
 ## Installation
 
-This project uses [Rye](https://rye-up.com/) for dependency management.
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/gazzetta-scraper
-cd gazzetta-scraper
-
-# Install dependencies using Rye
-rye sync
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management.
