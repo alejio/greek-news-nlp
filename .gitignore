@@ -42,7 +42,7 @@ htmlcov/
 .tox/
 
 # Project specific
-scraped_v2/
+scraped_data_v2/
 *.log
 *.db
 *.sqlite3
