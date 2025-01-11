@@ -29,7 +29,7 @@ dev = [
 ]
 
 [project.scripts]
-gazzetta-db = "data_collection.db_setup_cli:app"
+gazzetta-db = "data_collection.db.db_setup_cli:app"
 
 [tool.pytest.ini_options]
 addopts = "-ra -q --cov=data_collection --cov-report=term-missing"

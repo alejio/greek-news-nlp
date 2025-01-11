@@ -23,6 +23,15 @@ class Blogger(Base):
     
     articles = relationship("Article", back_populates="blogger")
 
+class Category(Base):
+    __tablename__ = 'categories'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False, unique=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    articles = relationship("Article", secondary=article_categories, back_populates="categories")
+
 class Article(Base):
     __tablename__ = 'articles'
     
@@ -36,12 +45,3 @@ class Article(Base):
     
     blogger = relationship("Blogger", back_populates="articles")
     categories = relationship("Category", secondary=article_categories, back_populates="articles")
-
-class Category(Base):
-    __tablename__ = 'categories'
-    
-    id = Column(Integer, primary_key=True)
-    name = Column(String(255), nullable=False, unique=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
-    articles = relationship("Article", secondary=article_categories, back_populates="categories")
