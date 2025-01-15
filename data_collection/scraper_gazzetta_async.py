@@ -9,6 +9,7 @@ from typing import List, Dict, Set, Optional
 from pathlib import Path
 from rich import print as rprint
 from rich.progress import Progress, SpinnerColumn, TimeElapsedColumn
+from rich.table import Table
 import aiofiles
 from functools import partial
 import signal

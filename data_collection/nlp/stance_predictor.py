@@ -4,9 +4,10 @@ import os
 from openai import OpenAI
 from rich import print as rprint
 from rich.progress import track
-from sqlalchemy import select
+from sqlalchemy import select, func
 from typing import Optional, Tuple
 from datetime import datetime
+from rich.table import Table
 
 from data_collection.db.db_config import get_db
 from data_collection.db.models import Article, StancePrediction
@@ -57,6 +58,7 @@ def classify_article_with_explanation(client: OpenAI, article_text: str, target_
 def predict(
     target_club: str = typer.Option(..., "--club", "-c", help="Target club for stance analysis"),
     batch_size: int = typer.Option(100, "--batch-size", "-b", help="Number of articles to process in each batch"),
+    limit: int = typer.Option(None, "--limit", "-l", help="Limit the number of articles to process"),
     force: bool = typer.Option(False, "--force", "-f", help="Force re-prediction of articles that already have predictions"),
     api_key: Optional[str] = typer.Option(None, "--api-key", help="OpenAI API key")
 ):
@@ -79,6 +81,11 @@ def predict(
                 (Article.id == StancePrediction.article_id) & 
                 (StancePrediction.target_club == target_club)
             ).where(StancePrediction.id.is_(None))
+        
+        # Add random ordering and limit
+        query = query.order_by(func.random())
+        if limit:
+            query = query.limit(limit)
         
         articles = db.execute(query).scalars().all()
         
