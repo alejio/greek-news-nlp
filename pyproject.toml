@@ -32,7 +32,7 @@ dev = [
 gazzetta-db = "data_collection.db.db_setup_cli:app"
 
 [tool.pytest.ini_options]
-addopts = "-ra -q --cov=data_collection --cov-report=term-missing"
+addopts = "-ra -q"
 testpaths = ["tests"]
 
 [tool.ruff]
