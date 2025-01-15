@@ -51,8 +51,8 @@ class StancePrediction(Base):
     
     id = Column(Integer, primary_key=True)
     article_id = Column(Integer, ForeignKey('articles.id'))
-    target_club = Column(String(255), nullable=False)
-    stance = Column(String(50), nullable=False)
+    target_club = Column(String(100), nullable=False)
+    stance = Column(String(100), nullable=False)
     justification = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     

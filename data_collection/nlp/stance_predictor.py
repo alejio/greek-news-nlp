@@ -17,7 +17,7 @@ app = typer.Typer()
 def classify_article_with_explanation(client: OpenAI, article_text: str, target_club: str) -> Tuple[str, str]:
     """Classifies the stance of an article towards a target club."""
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4o-mini",
         messages=[
             {
                 "role": "developer",
@@ -33,8 +33,8 @@ def classify_article_with_explanation(client: OpenAI, article_text: str, target_
                 "role": "user",
                 "content": (
                     f"Απόσπασμα:\n{article_text}\n\n"
-                    "Πρώτα γράψε μόνο μία λέξη (θετική, αρνητική ή ουδέτερη), "
-                    "και μετά δώσε μια σύντομη εξήγηση (μία πρόταση) για τη συλλογιστική σου."
+                    "Απάντησε ΜΟΝΟ με μία από τις λέξεις 'θετική', 'αρνητική' ή 'ουδέτερη' στην πρώτη γραμμή, "
+                    "και μετά σε νέα γραμμή δώσε μια σύντομη εξήγηση για τη συλλογιστική σου."
                 ),
             },
         ],
@@ -45,11 +45,18 @@ def classify_article_with_explanation(client: OpenAI, article_text: str, target_
     full_reply = response.choices[0].message.content.strip()
     lines = full_reply.split('\n', 1)
     
+    # Validate the stance
+    valid_stances = {'θετική', 'αρνητική', 'ουδέτερη'}
+    
     if len(lines) == 1:
-        stance = lines[0].strip()
+        stance = lines[0].strip().lower()
+        if stance not in valid_stances:
+            stance = "ουδέτερη"  # Default to neutral if invalid
         justification = ""
     else:
-        stance = lines[0].strip()
+        stance = lines[0].strip().lower()
+        if stance not in valid_stances:
+            stance = "ουδέτερη"  # Default to neutral if invalid
         justification = lines[1].strip()
 
     return stance, justification
