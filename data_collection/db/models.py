@@ -1,5 +1,5 @@
 # db/models.py
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Table, MetaData
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Table, MetaData, UniqueConstraint
 from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime
 
@@ -45,3 +45,20 @@ class Article(Base):
     
     blogger = relationship("Blogger", back_populates="articles")
     categories = relationship("Category", secondary=article_categories, back_populates="articles")
+
+class StancePrediction(Base):
+    __tablename__ = 'stance_predictions'
+    
+    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, ForeignKey('articles.id'))
+    target_club = Column(String(255), nullable=False)
+    stance = Column(String(50), nullable=False)
+    justification = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Add a unique constraint to prevent duplicate predictions for same article/club
+    __table_args__ = (
+        UniqueConstraint('article_id', 'target_club', name='unique_article_club_prediction'),
+    )
+    
+    article = relationship("Article", backref="stance_predictions")
