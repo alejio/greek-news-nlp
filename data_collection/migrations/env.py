@@ -11,7 +11,7 @@ from data_collection.db.models import Base
 config = context.config
 
 # Set up logging
-logger = logging.getLogger('alembic.env')
+logger = logging.getLogger("alembic.env")
 
 # Interpret the config file for Python logging
 if config.config_file_name is not None:
@@ -19,6 +19,7 @@ if config.config_file_name is not None:
 
 # Set up target metadata
 target_metadata = Base.metadata
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
@@ -33,12 +34,13 @@ def run_migrations_offline() -> None:
     with context.begin_transaction():
         context.run_migrations()
 
+
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
     # Add debug logging
     logger.info("Starting online migration")
     logger.info(f"Tables in metadata: {target_metadata.tables.keys()}")
-    
+
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
@@ -52,11 +54,12 @@ def run_migrations_online() -> None:
             # Add these options for better autogenerate
             include_schemas=True,
             include_name=lambda name, type_, parent_names: True,
-            compare_type=True
+            compare_type=True,
         )
 
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()
