@@ -1,12 +1,13 @@
+import json
 from datetime import datetime
 from pathlib import Path
-import json
-from typing import Dict, Any
-from sqlalchemy.orm import Session
+from typing import Any, Dict
+
 from rich import print as rprint
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
-from data_collection.db.models import Blogger, Article, Category
+from data_collection.db.models import Article, Blogger, Category
 
 
 class BaseLoader:
@@ -254,4 +255,4 @@ def load_data(db: Session, file_path: Path, loader_class):
                 continue
 
     db.commit()
-    rprint(f"[green]Successfully processed all articles![/green]")
+    rprint("[green]Successfully processed all articles![/green]")

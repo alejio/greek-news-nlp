@@ -1,11 +1,13 @@
-import typer
 from pathlib import Path
+
+import typer
 from rich import print as rprint
+
 from data_collection.db.db_config import get_db
 from data_collection.db.loaders import (
-    load_data,
-    ScrapedArticlesLoader,
     GazzettaBloggersLoader,
+    ScrapedArticlesLoader,
+    load_data,
 )
 
 app = typer.Typer()

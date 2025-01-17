@@ -1,18 +1,16 @@
-import typer
-import aiohttp
 import asyncio
-from bs4 import BeautifulSoup
-import pandas as pd
-from urllib.parse import urljoin
 import json
-from typing import List, Dict, Set, Optional
 from pathlib import Path
-from rich import print as rprint
-from rich.progress import Progress, SpinnerColumn, TimeElapsedColumn
-from rich.table import Table
+from typing import Dict, List, Optional, Set
+from urllib.parse import urljoin
+
 import aiofiles
-from functools import partial
-import signal
+import aiohttp
+import pandas as pd
+import typer
+from bs4 import BeautifulSoup
+from rich import print as rprint
+from rich.table import Table
 
 app = typer.Typer()
 
@@ -332,7 +330,7 @@ async def run_scraper(
             scraper.save_to_csv(all_bloggers, output_file)
             rprint(f"[bold green]Saved CSV output to {output_file}[/bold green]")
 
-        rprint(f"[bold blue]Scraping completed![/bold blue]")
+        rprint("[bold blue]Scraping completed![/bold blue]")
         rprint(f"Total bloggers scraped: {len(all_bloggers)}")
         rprint(
             f"Total articles scraped: {sum(len(b['articles']) for b in all_bloggers)}"

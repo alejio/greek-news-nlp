@@ -1,11 +1,12 @@
 """Command-line interface for managing the Gazzetta PostgreSQL database."""
 
-import typer
-import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import os
-from rich import print as rprint
 from typing import Optional
+
+import psycopg2
+import typer
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from rich import print as rprint
 
 app = typer.Typer(help="Manage Gazzetta PostgreSQL database")
 

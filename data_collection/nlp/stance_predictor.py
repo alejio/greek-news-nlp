@@ -1,14 +1,15 @@
 """Script to predict stance of articles and save to database."""
 
-import typer
 import os
+from datetime import datetime
+from typing import Optional, Tuple
+
+import typer
 from openai import OpenAI
 from rich import print as rprint
 from rich.progress import track
-from sqlalchemy import select, func
-from typing import Optional, Tuple
-from datetime import datetime
 from rich.table import Table
+from sqlalchemy import func, select
 
 from data_collection.db.db_config import get_db
 from data_collection.db.models import Article, StancePrediction
@@ -26,7 +27,7 @@ def classify_article_with_explanation(
         system_prompt = (
             "Είσαι ένας βοηθός ανάλυσης κειμένου για ελληνικά κείμενα. "
             "Θέλω να αναλύσεις το παρακάτω απόσπασμα και να προσδιορίσεις "
-            f"αν η στάση του κειμένου απέναντι στη διαιτησία "
+            "αν η στάση του κειμένου απέναντι στη διαιτησία "
             "είναι θετική (επαινετική/υποστηρικτική), αρνητική (επικριτική/αμφισβητεί), "
             "ή ουδέτερη (αντικειμενική/περιγραφική). "
             "Αν δεν υπάρχει αναφορά στη διαιτησία, απαντήσε με 'ουδέτερη'."

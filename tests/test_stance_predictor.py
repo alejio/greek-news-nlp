@@ -1,5 +1,7 @@
+from unittest.mock import Mock
+
 import pytest
-from unittest.mock import Mock, patch
+
 from data_collection.nlp.stance_predictor import classify_article_with_explanation
 
 

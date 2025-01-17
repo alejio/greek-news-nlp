@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from data_collection.db.models import Article, Blogger, Category, StancePrediction
 
 

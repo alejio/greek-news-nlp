@@ -1,8 +1,9 @@
 """Database connection configuration."""
 
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import os
 
 DATABASE_URL = DATABASE_URL = (
     f"postgresql+psycopg2://postgres:{os.getenv('POSTGRES_PASSWORD')}@localhost/gazzetta"

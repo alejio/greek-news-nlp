@@ -1,17 +1,17 @@
 # db/models.py
+from datetime import datetime
+
 from sqlalchemy import (
     Column,
-    Integer,
-    String,
-    Text,
     DateTime,
     ForeignKey,
+    Integer,
+    String,
     Table,
-    MetaData,
+    Text,
     UniqueConstraint,
 )
 from sqlalchemy.orm import declarative_base, relationship
-from datetime import datetime
 
 Base = declarative_base()
 

@@ -1,10 +1,11 @@
 """Initialize the database and Alembic migrations."""
 
-import typer
 import os
-from pathlib import Path
 import subprocess
 from configparser import ConfigParser
+from pathlib import Path
+
+import typer
 
 app = typer.Typer()
 
