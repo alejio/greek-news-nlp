@@ -22,9 +22,10 @@ def classify_article_with_explanation(client: OpenAI, article_text: str, target:
         system_prompt = (
             "Είσαι ένας βοηθός ανάλυσης κειμένου για ελληνικά κείμενα. "
             "Θέλω να αναλύσεις το παρακάτω απόσπασμα και να προσδιορίσεις "
-            f"αν η στάση του κειμένου απέναντι στη διαιτησία ή στον διαιτητή {target} "
+            f"αν η στάση του κειμένου απέναντι στη διαιτησία "
             "είναι θετική (επαινετική/υποστηρικτική), αρνητική (επικριτική/αμφισβητεί), "
             "ή ουδέτερη (αντικειμενική/περιγραφική). "
+            "Αν δεν υπάρχει αναφορά στη διαιτησία, απαντήσε με 'ουδέτερη'."
             "Στη συνέχεια, εξήγησε σε μία σύντομη παράγραφο γιατί κατέληξες σε αυτό το συμπέρασμα."
         )
     else:
@@ -77,7 +78,7 @@ def classify_article_with_explanation(client: OpenAI, article_text: str, target:
 
 @app.command()
 def predict(
-    target: str = typer.Option(..., "--target", "-t", help="Target club or referee for stance analysis"),
+    target: Optional[str] = typer.Option(None, "--target", "-t", help="Target club (required for club type, ignored for referee type)"),
     target_type: str = typer.Option("club", "--type", "-y", help="Type of target (club or referee)"),
     batch_size: int = typer.Option(100, "--batch-size", "-b", help="Number of articles to process in each batch"),
     limit: int = typer.Option(None, "--limit", "-l", help="Limit the number of articles to process"),
@@ -88,6 +89,14 @@ def predict(
     if target_type not in ["club", "referee"]:
         rprint("[red]Invalid target type. Must be either 'club' or 'referee'[/red]")
         raise typer.Exit(1)
+
+    if target_type == "club" and not target:
+        rprint("[red]Target is required when target_type is 'club'[/red]")
+        raise typer.Exit(1)
+    
+    # Set fixed target for referee type
+    if target_type == "referee":
+        target = "διαιτησία"
 
     if api_key:
         os.environ["OPENAI_API_KEY"] = api_key
