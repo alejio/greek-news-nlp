@@ -51,14 +51,15 @@ class StancePrediction(Base):
     
     id = Column(Integer, primary_key=True)
     article_id = Column(Integer, ForeignKey('articles.id'))
-    target_club = Column(String(100), nullable=False)
+    target = Column(String(100), nullable=False)
+    target_type = Column(String(20), nullable=False)  # 'club' or 'referee'
     stance = Column(String(100), nullable=False)
     justification = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     
-    # Add a unique constraint to prevent duplicate predictions for same article/club
+    # Update unique constraint to include target_type
     __table_args__ = (
-        UniqueConstraint('article_id', 'target_club', name='unique_article_club_prediction'),
+        UniqueConstraint('article_id', 'target', 'target_type', name='unique_article_target_prediction'),
     )
     
     article = relationship("Article", backref="stance_predictions")

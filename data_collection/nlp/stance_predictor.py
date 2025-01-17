@@ -14,20 +14,34 @@ from data_collection.db.models import Article, StancePrediction
 
 app = typer.Typer()
 
-def classify_article_with_explanation(client: OpenAI, article_text: str, target_club: str) -> Tuple[str, str]:
-    """Classifies the stance of an article towards a target club."""
+def classify_article_with_explanation(client: OpenAI, article_text: str, target: str, target_type: str = "club") -> Tuple[str, str]:
+    """Classifies the stance of an article towards a target (club or referee)."""
+    
+    # Customize prompt based on target type
+    if target_type == "referee":
+        system_prompt = (
+            "Είσαι ένας βοηθός ανάλυσης κειμένου για ελληνικά κείμενα. "
+            "Θέλω να αναλύσεις το παρακάτω απόσπασμα και να προσδιορίσεις "
+            f"αν η στάση του κειμένου απέναντι στη διαιτησία ή στον διαιτητή {target} "
+            "είναι θετική (επαινετική/υποστηρικτική), αρνητική (επικριτική/αμφισβητεί), "
+            "ή ουδέτερη (αντικειμενική/περιγραφική). "
+            "Στη συνέχεια, εξήγησε σε μία σύντομη παράγραφο γιατί κατέληξες σε αυτό το συμπέρασμα."
+        )
+    else:
+        system_prompt = (
+            "Είσαι ένας βοηθός ανάλυσης κειμένου για ελληνικά κείμενα. "
+            "Θέλω να αναλύσεις το παρακάτω απόσπασμα και να προσδιορίσεις "
+            f"αν η στάση του κειμένου απέναντι στην ομάδα {target} "
+            "είναι θετική, αρνητική, ή ουδέτερη. "
+            "Στη συνέχεια, εξήγησε σε μία σύντομη παράγραφο γιατί κατέληξες σε αυτό το συμπέρασμα."
+        )
+
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "developer",
-                "content": (
-                    "Είσαι ένας βοηθός ανάλυσης κειμένου για ελληνικά κείμενα. "
-                    "Θέλω να αναλύσεις το παρακάτω απόσπασμα και να προσδιορίσεις "
-                    f"αν η στάση του κειμένου απέναντι στην ομάδα {target_club} "
-                    "είναι θετική, αρνητική, ή ουδέτερη. "
-                    "Στη συνέχεια, εξήγησε σε μία σύντομη παράγραφο γιατί κατέληξες σε αυτό το συμπέρασμα."
-                ),
+                "content": system_prompt,
             },
             {
                 "role": "user",
@@ -63,13 +77,18 @@ def classify_article_with_explanation(client: OpenAI, article_text: str, target_
 
 @app.command()
 def predict(
-    target_club: str = typer.Option(..., "--club", "-c", help="Target club for stance analysis"),
+    target: str = typer.Option(..., "--target", "-t", help="Target club or referee for stance analysis"),
+    target_type: str = typer.Option("club", "--type", "-y", help="Type of target (club or referee)"),
     batch_size: int = typer.Option(100, "--batch-size", "-b", help="Number of articles to process in each batch"),
     limit: int = typer.Option(None, "--limit", "-l", help="Limit the number of articles to process"),
     force: bool = typer.Option(False, "--force", "-f", help="Force re-prediction of articles that already have predictions"),
     api_key: Optional[str] = typer.Option(None, "--api-key", help="OpenAI API key")
 ):
     """Predict stance for articles in the database."""
+    if target_type not in ["club", "referee"]:
+        rprint("[red]Invalid target type. Must be either 'club' or 'referee'[/red]")
+        raise typer.Exit(1)
+
     if api_key:
         os.environ["OPENAI_API_KEY"] = api_key
     elif not os.getenv("OPENAI_API_KEY"):
@@ -86,7 +105,8 @@ def predict(
             query = query.outerjoin(
                 StancePrediction,
                 (Article.id == StancePrediction.article_id) & 
-                (StancePrediction.target_club == target_club)
+                (StancePrediction.target == target) & 
+                (StancePrediction.target_type == target_type)
             ).where(StancePrediction.id.is_(None))
         
         # Add random ordering and limit
@@ -108,13 +128,15 @@ def predict(
                 stance, justification = classify_article_with_explanation(
                     client, 
                     article.content, 
-                    target_club
+                    target,
+                    target_type
                 )
                 
                 # Check if prediction exists and update it, or create new one
                 prediction = db.query(StancePrediction).filter_by(
                     article_id=article.id,
-                    target_club=target_club
+                    target=target,
+                    target_type=target_type
                 ).first()
                 
                 if prediction and force:
@@ -124,7 +146,8 @@ def predict(
                 else:
                     prediction = StancePrediction(
                         article_id=article.id,
-                        target_club=target_club,
+                        target=target,
+                        target_type=target_type,
                         stance=stance,
                         justification=justification
                     )
@@ -152,19 +175,24 @@ def predict(
 
 @app.command()
 def list_predictions(
-    target_club: Optional[str] = typer.Option(None, "--club", "-c", help="Filter by target club")
+    target: Optional[str] = typer.Option(None, "--target", "-t", help="Filter by target"),
+    target_type: Optional[str] = typer.Option(None, "--type", "-y", help="Filter by target type")
 ):
     """List existing predictions in the database."""
     db = next(get_db())
     
     try:
-        query = select(StancePrediction.target_club, 
+        query = select(StancePrediction.target, 
+                      StancePrediction.target_type,
                       func.count(StancePrediction.id).label('count'))
         
-        if target_club:
-            query = query.where(StancePrediction.target_club == target_club)
-            
-        query = query.group_by(StancePrediction.target_club)
+        if target:
+            query = query.where(StancePrediction.target == target)
+        
+        if target_type:
+            query = query.where(StancePrediction.target_type == target_type)
+        
+        query = query.group_by(StancePrediction.target, StancePrediction.target_type)
         
         results = db.execute(query).all()
         
@@ -173,11 +201,12 @@ def list_predictions(
             return
             
         table = Table(title="Stance Predictions")
-        table.add_column("Target Club")
+        table.add_column("Target")
+        table.add_column("Target Type")
         table.add_column("Count")
         
-        for club, count in results:
-            table.add_row(club, str(count))
+        for target, target_type, count in results:
+            table.add_row(target, target_type, str(count))
             
         rprint(table)
         

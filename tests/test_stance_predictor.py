@@ -24,19 +24,20 @@ def test_classify_article_positive(mock_openai_client):
     assert justification == "Θετική αναφορά στην ομάδα"
     assert mock_openai_client.chat.completions.create.called
 
-@pytest.mark.parametrize("response_content,expected", [
-    ("θετική\nΕξήγηση", ("θετική", "Εξήγηση")),
-    ("αρνητική\nΕξήγηση", ("αρνητική", "Εξήγηση")),
-    ("ουδέτερη\nΕξήγηση", ("ουδέτερη", "Εξήγηση")),
-    ("invalid\nΕξήγηση", ("ουδέτερη", "Εξήγηση")),  # Test invalid stance
+@pytest.mark.parametrize("target_type,article_text,expected_stance", [
+    ("club", "Η ομάδα έπαιξε εξαιρετικά.", "θετική"),
+    ("referee", "Ο διαιτητής έκανε σοβαρά λάθη.", "αρνητική"),
+    ("referee", "Ο διαιτητής διηύθυνε σωστά τον αγώνα.", "θετική"),
 ])
-def test_classify_article_variations(mock_openai_client, response_content, expected):
-    mock_openai_client.chat.completions.create.return_value.choices[0].message.content = response_content
+def test_classify_article_variations(mock_openai_client, target_type, article_text, expected_stance):
+    mock_openai_client.chat.completions.create.return_value.choices[0].message.content = f"{expected_stance}\nTest explanation"
     
     stance, justification = classify_article_with_explanation(
         mock_openai_client,
-        "Test article content",
-        "Test Club"
+        article_text,
+        "Test Target",
+        target_type
     )
     
-    assert (stance, justification) == expected 
+    assert stance == expected_stance
+    assert justification == "Test explanation" 

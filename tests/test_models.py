@@ -43,7 +43,8 @@ def test_stance_prediction(test_db):
     
     prediction = StancePrediction(
         article=article,
-        target_club="Test Club",
+        target="Test Club",
+        target_type="club",
         stance="θετική",
         justification="Test justification"
     )
@@ -51,4 +52,6 @@ def test_stance_prediction(test_db):
     test_db.commit()
     
     assert prediction.article_id == article.id
-    assert prediction.stance == "θετική" 
+    assert prediction.stance == "θετική"
+    assert prediction.target == "Test Club"
+    assert prediction.target_type == "club" 
