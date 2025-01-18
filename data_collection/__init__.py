@@ -1,13 +1,13 @@
 """Data collection package for Gazzetta scraping and database management."""
 
+from data_collection.db.models import Article, Blogger, Category
 from data_collection.scraper_gazzetta_async import GazzettaBloggerScraper
-from data_collection.db.models import Blogger, Article, Category
 
 __all__ = [
-    'GazzettaBloggerScraper',
-    'Blogger',
-    'Article',
-    'Category',
+    "GazzettaBloggerScraper",
+    "Blogger",
+    "Article",
+    "Category",
 ]
 
-__version__ = '0.1.0'
+__version__ = "0.1.0"

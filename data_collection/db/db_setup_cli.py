@@ -1,12 +1,15 @@
 """Command-line interface for managing the Gazzetta PostgreSQL database."""
-import typer
-import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+
 import os
-from rich import print as rprint
 from typing import Optional
 
+import psycopg2
+import typer
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from rich import print as rprint
+
 app = typer.Typer(help="Manage Gazzetta PostgreSQL database")
+
 
 def get_connection(dbname: str = "postgres"):
     """Get a PostgreSQL connection."""
@@ -14,14 +17,17 @@ def get_connection(dbname: str = "postgres"):
         dbname=dbname,
         user="postgres",
         password=os.getenv("POSTGRES_PASSWORD"),
-        host="localhost"
+        host="localhost",
     )
+
 
 @app.command()
 def create(
     dbname: str = "gazzetta",
     force: bool = typer.Option(False, "--force", "-f", help="Drop database if exists"),
-    password: Optional[str] = typer.Option(None, "--password", "-p", help="PostgreSQL password")
+    password: Optional[str] = typer.Option(
+        None, "--password", "-p", help="PostgreSQL password"
+    ),
 ):
     """Create the Gazzetta database."""
     if password:
@@ -37,10 +43,10 @@ def create(
 
         if force:
             rprint(f"[yellow]Dropping database {dbname} if exists...[/yellow]")
-            cur.execute(f'DROP DATABASE IF EXISTS {dbname}')
+            cur.execute(f"DROP DATABASE IF EXISTS {dbname}")
 
         rprint(f"[green]Creating database {dbname}...[/green]")
-        cur.execute(f'CREATE DATABASE {dbname}')
+        cur.execute(f"CREATE DATABASE {dbname}")
         rprint(f"[green]Successfully created database {dbname}![/green]")
 
     except psycopg2.Error as e:
@@ -53,11 +59,14 @@ def create(
         except:
             pass
 
+
 @app.command()
 def drop(
     dbname: str = "gazzetta",
     force: bool = typer.Option(False, "--force", "-f", help="Skip confirmation prompt"),
-    password: Optional[str] = typer.Option(None, "--password", "-p", help="PostgreSQL password")
+    password: Optional[str] = typer.Option(
+        None, "--password", "-p", help="PostgreSQL password"
+    ),
 ):
     """Drop the Gazzetta database."""
     if password:
@@ -67,7 +76,9 @@ def drop(
         os.environ["POSTGRES_PASSWORD"] = password
 
     if not force:
-        confirm = typer.confirm(f"Are you sure you want to drop the database '{dbname}'?")
+        confirm = typer.confirm(
+            f"Are you sure you want to drop the database '{dbname}'?"
+        )
         if not confirm:
             rprint("[yellow]Operation cancelled.[/yellow]")
             raise typer.Exit()
@@ -78,7 +89,7 @@ def drop(
         cur = conn.cursor()
 
         rprint(f"[yellow]Dropping database {dbname}...[/yellow]")
-        cur.execute(f'DROP DATABASE IF EXISTS {dbname}')
+        cur.execute(f"DROP DATABASE IF EXISTS {dbname}")
         rprint(f"[green]Successfully dropped database {dbname}![/green]")
 
     except psycopg2.Error as e:
@@ -91,10 +102,12 @@ def drop(
         except:
             pass
 
+
 @app.command()
 def reset(
     dbname: str = "gazzetta",
-    password: Optional[str] = typer.Option(None, "--password", "-p", help="PostgreSQL password")
+    password: Optional[str] = typer.Option(
+        None, "--password", "-p", help="PostgreSQL password"
+    ),
 ):
     """Reset (drop and recreate) the Gazzetta database."""
-    
