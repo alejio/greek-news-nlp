@@ -316,52 +316,6 @@ wheels = [
 ]
 
 [[package]]
-name = "data-collection"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "alembic" },
-    { name = "beautifulsoup4" },
-    { name = "crawl4ai" },
-    { name = "pandas" },
-    { name = "playwright" },
-    { name = "psycopg2-binary" },
-    { name = "requests" },
-    { name = "sqlalchemy" },
-    { name = "typer" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "black" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-mock" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "alembic", specifier = ">=1.14.0" },
-    { name = "beautifulsoup4", specifier = ">=4.12.0" },
-    { name = "black", marker = "extra == 'dev'", specifier = ">=24.0.0" },
-    { name = "crawl4ai", specifier = ">=0.4.2" },
-    { name = "pandas", specifier = ">=2.2.0" },
-    { name = "playwright", specifier = ">=1.49.1" },
-    { name = "psycopg2-binary", specifier = ">=2.9.10" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0.0" },
-    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.12.0" },
-    { name = "requests", specifier = ">=2.31.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.9" },
-    { name = "sqlalchemy", specifier = ">=2.0.37" },
-    { name = "typer", specifier = ">=0.15.1" },
-]
-
-[package.metadata.requires-dev]
-dev = []
-
-[[package]]
 name = "distro"
 version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -419,6 +373,52 @@ sdist = { url = "https://files.pythonhosted.org/packages/ee/11/de70dee31455c546f
 wheels = [
     { url = "https://files.pythonhosted.org/packages/de/86/5486b0188d08aa643e127774a99bac51ffa6cf343e3deb0583956dca5b22/fsspec-2024.12.0-py3-none-any.whl", hash = "sha256:b520aed47ad9804237ff878b504267a3b0b441e97508bd6d2d8774e3db85cee2", size = 183862 },
 ]
+
+[[package]]
+name = "greek-news-nlp"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "alembic" },
+    { name = "beautifulsoup4" },
+    { name = "crawl4ai" },
+    { name = "pandas" },
+    { name = "playwright" },
+    { name = "psycopg2-binary" },
+    { name = "requests" },
+    { name = "sqlalchemy" },
+    { name = "typer" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "black" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-mock" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alembic", specifier = ">=1.14.0" },
+    { name = "beautifulsoup4", specifier = ">=4.12.0" },
+    { name = "black", marker = "extra == 'dev'", specifier = ">=24.0.0" },
+    { name = "crawl4ai", specifier = ">=0.4.2" },
+    { name = "pandas", specifier = ">=2.2.0" },
+    { name = "playwright", specifier = ">=1.49.1" },
+    { name = "psycopg2-binary", specifier = ">=2.9.10" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0.0" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0.0" },
+    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.12.0" },
+    { name = "requests", specifier = ">=2.31.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.9" },
+    { name = "sqlalchemy", specifier = ">=2.0.37" },
+    { name = "typer", specifier = ">=0.15.1" },
+]
+
+[package.metadata.requires-dev]
+dev = []
 
 [[package]]
 name = "greenlet"
