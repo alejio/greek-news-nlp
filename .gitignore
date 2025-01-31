@@ -79,3 +79,5 @@ dmypy.json
 .pyre/
 
 core/db/backups/
+.conda/
+.ruff_cache/
