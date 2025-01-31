@@ -1,6 +1,6 @@
 """Data collection package for Gazzetta scraping and database management."""
 
-from data_collection.db.models import Article, Blogger, Category
+from core.db.models import Article, Blogger, Category
 from data_collection.scraper_gazzetta_async import GazzettaBloggerScraper
 
 __all__ = [

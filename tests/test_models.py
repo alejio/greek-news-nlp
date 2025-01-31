@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from data_collection.db.models import Article, Blogger, Category, StancePrediction
+from core.db.models import Article, Blogger, Category, StancePrediction
 
 
 def test_blogger_creation(test_db):
