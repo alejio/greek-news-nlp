@@ -2,7 +2,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from data_collection.nlp.stance_predictor import classify_article_with_explanation
+from core.nlp.stance_predictor import classify_article_with_explanation
 
 
 @pytest.fixture
