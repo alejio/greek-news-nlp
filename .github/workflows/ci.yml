@@ -36,16 +36,14 @@ jobs:
       with:
         enable-cache: true
 
-    # - name: Install Python ${{ matrix.python-version }}
-    #   run: uv python install ${{ matrix.python-version }}
 
     - name: "Set up Python"
       uses: actions/setup-python@v5
       with:
         python-version-file: "pyproject.toml"
 
-    - name: Install dependencies
-      run: uv pip install --system ".[dev]"
+    - name: Install the project
+      run: uv sync --all-extras --dev
 
     - name: Run Ruff linter
       run: uv run ruff check . --select E,F,I,N --line-length 88
