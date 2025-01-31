@@ -29,28 +29,23 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+    - uses: actions/checkout@v4
 
     - name: Install uv
-      run: |
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+
+    - name: Install Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
 
     - name: Install dependencies
-      run: |
-        uv pip install ".[dev]"
+      run: uv pip install --system ".[dev]"
 
     - name: Run Ruff linter
-      run: |
-        ruff check . --select E,F,I,N --line-length 88
+      run: uv run ruff check . --select E,F,I,N --line-length 88
 
     - name: Run tests with pytest
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/greek_news_test
-      run: |
-        pytest tests/ -ra -q --cov=. 
+      run: uv run pytest tests/ -ra -q --cov=. 
