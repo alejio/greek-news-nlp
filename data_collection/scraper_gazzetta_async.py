@@ -25,7 +25,11 @@ class GazzettaBloggerScraper:
         self.base_url = "https://www.gazzetta.gr"
         self.bloggers_url = f"{self.base_url}/bloggers"
         self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/91.0.4472.124 Safari/537.36"
+            )
         }
         self.data_dir = Path(output_dir)
         self.data_dir.mkdir(exist_ok=True)
@@ -121,7 +125,8 @@ class GazzettaBloggerScraper:
         while True:
             if self.max_articles and len(articles) >= self.max_articles:
                 rprint(
-                    f"[yellow]Reached maximum articles limit ({self.max_articles}) for {blogger_name}[/yellow]"
+                    "[yellow]Reached maximum articles limit "
+                    f"({self.max_articles}) for {blogger_name}[/yellow]"
                 )
                 break
 
@@ -165,7 +170,8 @@ class GazzettaBloggerScraper:
                                 categories = [
                                     cat.text.strip()
                                     for cat in element.select(
-                                        ".is-category.whubcategory, .is-category.whubteam"
+                                        ".is-category.whubcategory, "
+                                        ".is-category.whubteam"
                                     )
                                 ]
 

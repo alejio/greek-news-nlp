@@ -56,8 +56,9 @@ def create(
         try:
             cur.close()
             conn.close()
-        except:
-            pass
+        except (psycopg2.Error, AttributeError) as e:
+            rprint(f"[yellow]Warning: Error while "
+                   f"closing database connection: {e}[/yellow]")
 
 
 @app.command()
@@ -99,8 +100,9 @@ def drop(
         try:
             cur.close()
             conn.close()
-        except:
-            pass
+        except (psycopg2.Error, AttributeError) as e:
+            rprint(f"[yellow]Warning: Error while "
+                   f"closing database connection: {e}[/yellow]")
 
 
 @app.command()

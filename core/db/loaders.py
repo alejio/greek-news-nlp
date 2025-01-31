@@ -7,7 +7,7 @@ from rich import print as rprint
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from data_collection.db.models import Article, Blogger, Category
+from core.db.models import Article, Blogger, Category
 
 
 class BaseLoader:
@@ -73,7 +73,8 @@ class ScrapedArticlesLoader(BaseLoader):
                 return datetime.strptime(date_str, "%d/%m/%Y")
             except ValueError:
                 rprint(
-                    f"[yellow]Warning: Could not parse date {date_str}, using current time[/yellow]"
+                    "[yellow]Warning: Could not parse date "
+                    f"{date_str}, using current time[/yellow]"
                 )
                 return datetime.utcnow()
 
@@ -93,7 +94,8 @@ class ScrapedArticlesLoader(BaseLoader):
 
             if existing_article:
                 rprint(
-                    f"[yellow]Article already exists: {article_data.get('title', 'Unknown')}[/yellow]"
+                    "[yellow]Article already exists: "
+                    f"{article_data.get('title', 'Unknown')}[/yellow]"
                 )
                 return
 
@@ -121,7 +123,8 @@ class ScrapedArticlesLoader(BaseLoader):
         except IntegrityError:
             self.db.rollback()
             rprint(
-                f"[yellow]Skipping duplicate article: {article_data.get('title', 'Unknown')}[/yellow]"
+                "[yellow]Skipping duplicate article: "
+                f"{article_data.get('title', 'Unknown')}[/yellow]"
             )
         except Exception as e:
             rprint(f"[red]Error processing article: {e}[/red]")
@@ -143,7 +146,8 @@ class GazzettaBloggersLoader(BaseLoader):
                 return datetime.strptime(date_str, "%d/%m/%Y - %H:%M")
             except ValueError:
                 rprint(
-                    f"[yellow]Warning: Could not parse date {date_str}, using current time[/yellow]"
+                    "[yellow]Warning: Could not parse date "
+                    f"{date_str}, using current time[/yellow]"
                 )
                 return datetime.utcnow()
 
@@ -163,7 +167,8 @@ class GazzettaBloggersLoader(BaseLoader):
 
             if existing_article:
                 rprint(
-                    f"[yellow]Article already exists: {article_data.get('title', 'Unknown')}[/yellow]"
+                    "[yellow]Article already exists: "
+                    f"{article_data.get('title', 'Unknown')}[/yellow]"
                 )
                 return
 
@@ -194,20 +199,26 @@ class GazzettaBloggersLoader(BaseLoader):
         except IntegrityError:
             self.db.rollback()
             rprint(
-                f"[yellow]Skipping duplicate article: {article_data.get('title', 'Unknown')}[/yellow]"
+                "[yellow]Skipping duplicate article: "
+                f"{article_data.get('title', 'Unknown')}[/yellow]"
             )
         except Exception as e:
             rprint(f"[red]Error processing article: {e}[/red]")
             raise
 
 
-def load_data(db: Session, file_path: Path, loader_class):
+def load_data(
+    db: Session,
+    file_path: Path,
+    loader_class: type[BaseLoader],  # Specify the type more precisely
+):
     """Generic function to load data using the specified loader.
 
     Args:
         db: SQLAlchemy database session
         file_path: Path to the JSON data file
-        loader_class: Class to use for loading the data (ScrapedArticlesLoader or GazzettaBloggersLoader)
+        loader_class: Class to use for loading the data
+            (ScrapedArticlesLoader or GazzettaBloggersLoader)
     """
     loader = loader_class(db)
 
@@ -231,12 +242,14 @@ def load_data(db: Session, file_path: Path, loader_class):
 
                     if processed % 100 == 0:  # Progress update every 100 articles
                         rprint(
-                            f"[green]Processed {processed}/{total_articles} articles[/green]"
+                            "[green]Processed "
+                            f"{processed}/{total_articles} articles[/green]"
                         )
                         db.commit()  # Intermediate commit
             except Exception as e:
                 rprint(
-                    f"[red]Error processing article {processed}/{total_articles}: {e}[/red]"
+                    "[red]Error processing article "
+                    f"{processed}/{total_articles}: {e}[/red]"
                 )
                 db.rollback()
                 continue

@@ -10,13 +10,13 @@ def test_db():
     """Create a test database and return a session."""
     # Use SQLite for testing
     engine = create_engine("sqlite:///:memory:")
-    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
     # Create all tables
     Base.metadata.create_all(bind=engine)
 
     # Create session
-    session = TestingSessionLocal()
+    session = testing_session_local()
 
     yield session
 
