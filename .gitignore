@@ -78,4 +78,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-data_collection/db/backups/
+core/db/backups/
+.conda/
+.ruff_cache/

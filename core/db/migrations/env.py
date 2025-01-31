@@ -5,7 +5,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 # Import your models
-from data_collection.db.models import Base
+from core.db.models import Base
 
 # this is the Alembic Config object
 config = context.config

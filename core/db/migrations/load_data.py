@@ -3,8 +3,8 @@ from pathlib import Path
 import typer
 from rich import print as rprint
 
-from data_collection.db.db_config import get_db
-from data_collection.db.loaders import (
+from core.db.config import get_db
+from core.db.loaders import (
     GazzettaBloggersLoader,
     ScrapedArticlesLoader,
     load_data,
