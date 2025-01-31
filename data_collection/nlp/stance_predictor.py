@@ -11,8 +11,8 @@ from rich.progress import track
 from rich.table import Table
 from sqlalchemy import func, select
 
-from data_collection.db.db_config import get_db
-from data_collection.db.models import Article, StancePrediction
+from core.db.config import get_db
+from core.db.models import Article, StancePrediction
 
 app = typer.Typer()
 

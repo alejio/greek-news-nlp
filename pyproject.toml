@@ -1,5 +1,5 @@
 [project]
-name = "data-collection"
+name = "greek-news-nlp"
 version = "0.1.0"
 description = "Scrapers for Greek news websites"
 authors = [
@@ -29,7 +29,7 @@ dev = [
 ]
 
 [project.scripts]
-gazzetta-db = "data_collection.db.db_setup_cli:app"
+gazzetta-db = "core.db.cli:app"
 
 [tool.pytest.ini_options]
 addopts = "-ra -q"
@@ -50,4 +50,4 @@ dev = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["data_collection"]
+packages = ["data_collection", "core"]

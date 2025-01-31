@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from data_collection.db.db_config import get_db
+from core.db.config import get_db
 
 
 def test_get_db():

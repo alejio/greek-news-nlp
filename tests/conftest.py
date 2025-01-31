@@ -1,9 +1,8 @@
-
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from data_collection.db.models import Base
+from core.db.models import Base
 
 
 @pytest.fixture(scope="function")
