@@ -38,6 +38,7 @@ testpaths = ["tests"]
 [tool.ruff]
 select = ["E", "F", "I", "N"]
 line-length = 88
+exclude = ["analysis/"]
 
 [build-system]
 requires = ["hatchling"]
