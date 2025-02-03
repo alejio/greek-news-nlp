@@ -2,6 +2,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.routers import articles
+
 app = FastAPI(
     title="Greek News NLP API",
     description="API for analyzing bias in Greek sports journalism",
@@ -26,9 +28,8 @@ async def root():
         "status": "active"
     }
 
-# Import and include routers
-# Example: app.include_router(articles.router, prefix="/api/v1/articles", 
-# tags=["articles"])
+# Include routers
+app.include_router(articles.router, prefix="/api/v1", tags=["articles"])
 
 if __name__ == "__main__":
     import uvicorn
