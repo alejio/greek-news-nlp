@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/greek_news_nlp
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    networks:
+      - greek-news-network
+
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=greek_news_nlp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - greek-news-network
+
+volumes:
+  postgres_data:
+
+networks:
+  greek-news-network:
+    driver: bridge 
