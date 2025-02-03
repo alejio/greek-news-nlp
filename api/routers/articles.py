@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.db.config import get_db
-from core.db.models import Article, Blogger, Category, StancePrediction
+from core.db.models import Article, Blogger, StancePrediction
 
 router = APIRouter()
 
@@ -51,8 +51,12 @@ class ArticleResponse(BaseModel):
 async def get_articles(
     skip: int = Query(0, description="Number of articles to skip"),
     limit: int = Query(10, description="Number of articles to return"),
-    target: Optional[str] = Query(None, description="Filter by target (e.g. team name or referee)"),
-    target_type: Optional[str] = Query(None, description="Filter by target type (club or referee)"),
+    target: Optional[str] = Query(None, 
+                                  description="Filter by target " \
+                                    "(e.g. team name or referee)"),
+    target_type: Optional[str] = Query(None, 
+                                       description="Filter by target type " \
+                                        "(club or referee)"),
     stance: Optional[str] = Query(None, description="Filter by stance"),
     db: Session = Depends(get_db)
 ):
