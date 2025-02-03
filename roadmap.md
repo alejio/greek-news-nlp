@@ -7,6 +7,8 @@
 
 ## Stage 2
 - Web application: I now need to create an MVP web application that does basic data visualization. I want the web app to look and feel good so I am not restricted by the Python ecosystem. This app will need to be supported by a Python backend. The app will give me ideas for the next stage.
+- I've made a simple FastAPI backend and added a router for articles.
+- Now I want to dockerize the app and run it in a container.
 
 ## Stage 3
 - Some ideas include:
