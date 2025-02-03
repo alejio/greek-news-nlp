@@ -6,20 +6,31 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/greek_news_nlp
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db/gazzetta
+    env_file:
+      - .env
     depends_on:
       - db
     volumes:
       - .:/app
     networks:
       - greek-news-network
+    command: >
+      sh -c '
+        echo "Running database migrations..." &&
+        alembic upgrade head &&
+        echo "Starting API server..." &&
+        uv run uvicorn api.main:app --host 0.0.0.0 --port 8000
+      '
 
   db:
     image: postgres:16
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=greek_news_nlp
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=gazzetta
+    env_file:
+      - .env
     ports:
       - "5433:5432"
     volumes:

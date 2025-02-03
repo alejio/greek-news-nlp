@@ -20,6 +20,7 @@ COPY README.md .
 COPY api api/
 COPY core core/
 COPY data_collection data_collection/
+COPY alembic.ini .
 
 # Install project dependencies
 ENV PATH="/root/.local/bin:$PATH"
