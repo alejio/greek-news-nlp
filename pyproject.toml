@@ -15,6 +15,10 @@ dependencies = [
     "alembic>=1.14.0",
     "sqlalchemy>=2.0.37",
     "psycopg2-binary>=2.9.10",
+    "fastapi>=0.115.8",
+    "uvicorn>=0.34.0",
+    "pydantic>=2.10.6",
+    "python-multipart>=0.0.20",
 ]
 readme = "README.md"
 requires-python = ">= 3.13"
@@ -26,6 +30,8 @@ dev = [
     "black>=24.0.0",
     "ruff>=0.1.9",
     "pytest-mock>=3.12.0",
+    "httpx>=0.28.1",
+    "pytest-asyncio>=0.23.5",
 ]
 
 [project.scripts]
@@ -34,6 +40,8 @@ gazzetta-db = "core.db.cli:app"
 [tool.pytest.ini_options]
 addopts = "-ra -q"
 testpaths = ["tests"]
+pythonpath = [".", "api"]
+asyncio_mode = "auto"
 
 [tool.ruff]
 line-length = 88
@@ -102,4 +110,4 @@ dev = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["data_collection", "core"]
+packages = ["data_collection", "core", "api"]
