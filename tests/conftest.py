@@ -1,4 +1,5 @@
 import os
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -18,13 +19,13 @@ def test_db() -> Session:
     """Create a test database and return a session."""
     # Use SQLite for testing
     engine = create_engine("sqlite:///:memory:")
-    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    test_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
     # Create all tables
     Base.metadata.create_all(bind=engine)
 
     # Create session
-    session = TestingSessionLocal()
+    session = test_session_local()
 
     yield session
 
