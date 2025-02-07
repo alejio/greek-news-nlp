@@ -6,9 +6,9 @@
 - Data analysis: In notebooks/prototyping.ipynb and notebooks/sentiment_eda.ipynb I explored the data. I have seen some interesting things but I need to do more analysis. However, I will like to proceed to the next stage now so I have something end-to-end to show.
 
 ## Stage 2
-- Web application: I now need to create an MVP web application that does basic data visualization. I want the web app to look and feel good so I am not restricted by the Python ecosystem. This app will need to be supported by a Python backend. The app will give me ideas for the next stage.
 - I've made a simple FastAPI backend and added a router for articles.
-- Now I want to dockerize the app and run it in a container.
+- I've created a Dockerfile and docker-compose.yml file to run the app in a container. It doesn't quite work as intended because the database is empty. I will deal with this at a later point. Also considering whether I should use a managed database service like AWS RDS.
+- Web application: I now need to create an MVP web application that does basic data visualization. I want the web app to look and feel good so I am not restricted by the Python ecosystem. This app will need to be supported by a Python backend. The app will give me ideas for the next stage.
 
 ## Stage 3
 - Some ideas include:
