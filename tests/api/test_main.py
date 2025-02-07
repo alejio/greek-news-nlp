@@ -10,15 +10,17 @@ from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 
 from api.main import app
+from core.db.config import get_db
 
 
 @pytest.fixture
-def client() -> TestClient:
+def client(override_get_db) -> TestClient:
     """Create a test client fixture for synchronous tests.
     
     Returns:
         TestClient: A TestClient instance for testing the API.
     """
+    app.dependency_overrides[get_db] = lambda: override_get_db
     return TestClient(app)
 
 
