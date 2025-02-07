@@ -51,4 +51,6 @@ jobs:
     - name: Run tests with pytest
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/greek_news_test
+        TESTING: "true"
+        POSTGRES_PASSWORD: postgres
       run: uv run pytest tests/ -ra -q --cov=. 
