@@ -85,6 +85,22 @@ core/db/backups/
 # Environment variables
 .env
 .env.*
+!.env.example
 
 # Docker
 .docker/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/.turbo/
+frontend/out/
+frontend/build/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.env*.local
+frontend/.vercel
+frontend/coverage/
+frontend/.eslintcache
+frontend/tsconfig.tsbuildinfo
