@@ -7,10 +7,16 @@
 
 ## Stage 2
 - I've made a simple FastAPI backend and added a router for articles.
+- I have setup CI/CD pipeline with Github Actions.
 - I've created a Dockerfile and docker-compose.yml file to run the app in a container. It doesn't quite work as intended because the database is empty. I will deal with this at a later point. Also considering whether I should use a managed database service like AWS RDS.
-- Web application: I now need to create an MVP web application that does basic data visualization. I want the web app to look and feel good so I am not restricted by the Python ecosystem. This app will need to be supported by a Python backend. The app will give me ideas for the next stage.
+- Web application: I created a simple frontend in Next.js. It allows visualising some data by hitting the backend endpoints which in turn hit the database.
 
 ## Stage 3
+- [INSERT IDEAS]
+
+
+## Ideation
 - Some ideas include:
   - Data collection: I will add football match details such as results, major refereeing decisions such as red cards and penalties, etc. I can also add more websites to scrape.
   - Data storage: I should adapt scrapers to write directly to the database.
+  - I am thinking of adding a chatbot that will answer questions about the data. It would be great if it could do visualisations on the fly based on natural language queries. For example: "How often does journalist Κώστας Νικολακόπουλος complain about referee decisions after defeats of Olympiakos?"
